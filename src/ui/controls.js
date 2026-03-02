@@ -4,24 +4,25 @@
 
 export class Controls {
   constructor({ onLoad, onPreset }) {
-    this.onLoad = onLoad;
+    this.onLoad   = onLoad;
     this.onPreset = onPreset;
 
-    this.$url = document.getElementById('stream-url');
+    this.$url     = document.getElementById('stream-url');
     this.$loadBtn = document.getElementById('load-btn');
-    this.$bpm = document.getElementById('bpm-display');
-    this.$status = document.getElementById('status-display');
+    this.$bpm     = document.getElementById('bpm-display');
+    this.$status  = document.getElementById('status-display');
 
     this.$meters = {
-      bass: document.getElementById('meter-bass'),
-      mid: document.getElementById('meter-mid'),
+      bass:   document.getElementById('meter-bass'),
+      mid:    document.getElementById('meter-mid'),
       treble: document.getElementById('meter-treble'),
     };
 
     this.$presetBtns = {
-      milkdrop: document.getElementById('btn-milkdrop'),
-      particles: document.getElementById('btn-particles'),
-      scope: document.getElementById('btn-scope'),
+      milkdrop:    document.getElementById('btn-milkdrop'),
+      particles:   document.getElementById('btn-particles'),
+      scope:       document.getElementById('btn-scope'),
+      butterchurn: document.getElementById('btn-butterchurn'),
     };
 
     this._bind();
@@ -60,8 +61,8 @@ export class Controls {
     }
 
     const clamp = (v) => Math.min(100, Math.max(0, v * 100));
-    this.$meters.bass.style.width = `${clamp(bassEnergy)}%`;
-    this.$meters.mid.style.width = `${clamp(midEnergy)}%`;
+    this.$meters.bass.style.width   = `${clamp(bassEnergy)}%`;
+    this.$meters.mid.style.width    = `${clamp(midEnergy)}%`;
     this.$meters.treble.style.width = `${clamp(trebleEnergy)}%`;
   }
 
