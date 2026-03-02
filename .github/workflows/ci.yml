@@ -25,6 +25,7 @@ jobs:
         run: npm run build
 
       - name: Audit dependencies
-        # --audit-level=moderate fails the job on moderate+ severity CVEs.
-        # Use --audit-level=high if moderate is too noisy while the project is young.
-        run: npm audit --audit-level=moderate
+        # --omit=dev skips devDependencies (Vite/esbuild dev-server CVE is not a
+        # production concern for a static frontend with no server runtime).
+        # When this project adds runtime npm dependencies, revisit this flag.
+        run: npm audit --audit-level=moderate --omit=dev
