@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Pre-commit hook: scan staged changes for secrets using gitleaks.
+# Install once per clone: npm run hooks:install
+
+if ! command -v gitleaks &>/dev/null; then
+  echo "⚠️  gitleaks not found — skipping secrets scan."
+  echo "   Install: brew install gitleaks"
+  exit 0
+fi
+
+gitleaks protect --staged --redact --no-banner
+STATUS=$?
+
+if [ $STATUS -ne 0 ]; then
+  echo ""
+  echo "❌ gitleaks found potential secrets in staged files."
+  echo "   Review the output above, remove the secret, then re-stage."
+  echo "   If this is a false positive, add an allowlist entry to .gitleaks.toml"
+  exit 1
+fi
+
+exit 0
