@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    name: Build & audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit dependencies
+        # --omit=dev skips devDependencies (Vite/esbuild dev-server CVE is not a
+        # production concern for a static frontend with no server runtime).
+        # When this project adds runtime npm dependencies, revisit this flag.
+        run: npm audit --audit-level=moderate --omit=dev
