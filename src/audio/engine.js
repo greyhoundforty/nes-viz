@@ -121,3 +121,11 @@ export function getFrequencyBands() {
 export function isPlaying() {
   return audioEl && !audioEl.paused && !audioEl.ended;
 }
+
+export function getContext() {
+  return ctx;
+}
+
+export function getSourceNode() {
+  return source;
+}

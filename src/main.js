@@ -20,6 +20,8 @@ const controls = new Controls({
 
     try {
       await engine.loadUrl(url);
+      // Make audio context + source available for butterchurn after first load
+      viz.setAudioNodes(engine.getContext(), engine.getSourceNode());
       controls.setStatus('PLAYING', '#00ff90');
     } catch (err) {
       console.error('Load failed:', err);
