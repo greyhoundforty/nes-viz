@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nes-viz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0f;
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    #hud {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.75);
+      border-top: 1px solid #00ff9030;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      color: #00ff90;
+    }
+
+    #hud .url-group {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    #hud input[type="text"] {
+      flex: 1;
+      background: #0a0a0f;
+      border: 1px solid #00ff9060;
+      color: #00ff90;
+      font-family: 'VT323', monospace;
+      font-size: 16px;
+      padding: 4px 8px;
+      outline: none;
+    }
+    #hud input[type="text"]::placeholder { color: #00ff9050; }
+    #hud input[type="text"]:focus { border-color: #00ff90; }
+
+    #hud button {
+      background: transparent;
+      border: 1px solid #00ff9060;
+      color: #00ff90;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      padding: 3px 10px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.1s, border-color 0.1s;
+    }
+    #hud button:hover { background: #00ff9020; border-color: #00ff90; }
+    #hud button.active {
+      background: #00ff9030;
+      border-color: #00ff90;
+      color: #fff;
+    }
+
+    .preset-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .meters {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .meter-label {
+      color: #00ff9080;
+      font-size: 14px;
+    }
+
+    .meter-bar-wrap {
+      width: 36px;
+      height: 12px;
+      background: #0a0a0f;
+      border: 1px solid #00ff9040;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .meter-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: #00ff90;
+      transition: width 0.05s;
+    }
+
+    .meter-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    #bpm-display {
+      color: #00ccff;
+      min-width: 70px;
+    }
+
+    #status-display {
+      color: #ff6060;
+      font-size: 14px;
+      min-width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="url-group">
+      <input type="text" id="stream-url" placeholder="Stream URL..." />
+      <button id="load-btn">LOAD</button>
+    </div>
+
+    <div class="preset-group">
+      <button id="btn-milkdrop" class="active">MILKDROP</button>
+      <button id="btn-particles">PARTICLES</button>
+      <button id="btn-scope">SCOPE</button>
+    </div>
+
+    <div class="meters">
+      <div class="meter-item">
+        <div class="meter-label">BASS</div>
+        <div class="meter-bar-wrap"><div class="meter-bar" id="meter-bass"></div></div>
+      </div>
+      <div class="meter-item">
+        <div class="meter-label">MID</div>
+        <div class="meter-bar-wrap"><div class="meter-bar" id="meter-mid"></div></div>
+      </div>
+      <div class="meter-item">
+        <div class="meter-label">TRE</div>
+        <div class="meter-bar-wrap"><div class="meter-bar" id="meter-treble"></div></div>
+      </div>
+    </div>
+
+    <div id="bpm-display">BPM: --</div>
+    <div id="status-display">STOPPED</div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
